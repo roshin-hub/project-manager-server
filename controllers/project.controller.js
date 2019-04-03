@@ -12,31 +12,87 @@ exports.project_create = function (req, res) {
         }
     );
 
-    project.save(function (err) {
-        if (err) {
-            return next(err);
-        }
-        res.send('Project created successfully')
-    })
+        project.save()
+        .then(data => {
+            res.send({msg:"Project created successfully"});
+        }).catch(err => {
+            res.status(500).send({
+                err_msg: err.message || "Some error occurred while creating Project."
+            });
+        });
+  
 };
 
-exports.project_details = function (req, res) {
-    Project.findById(req.params.id, function (err, project) {
-        if (err) return next(err);
-        res.send(project);
-    })
+exports.project_details = (req, res) => {
+    Project.findById(req.params.id)
+    .then(data => {
+        if(!data) {
+            return res.status(404).send({
+                err_msg: "Project not found with id " + req.params.id
+            });            
+        }
+        res.send(data);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                err_msg: "Project not found with id " + req.params.id
+            });                
+        }
+        return res.status(500).send({
+            err_msg: "Error retrieving Project with id " + req.params.id
+        });
+    });
 };
 
 exports.project_update = function (req, res) {
     Project.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, project) {
         if (err) return next(err);
-        res.send('Project udpated.');
+        res.send({msg:"Project updated successfully"});
     });
 };
 
-exports.project_delete = function (req, res) {
-    Project.findByIdAndRemove(req.params.id, function (err) {
-        if (err) return next(err);
-        res.send('Deleted successfully!');
-    })
+
+exports.project_delete = (req, res) => {
+    Project.findByIdAndRemove(req.params.id)
+    .then(data => {
+        if(!data) {
+            return res.status(404).send({
+                err_msg: "Project not found with id " + req.params.id
+            });
+        }
+        res.send({msg: "Project deleted successfully!"});
+    }).catch(err => {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                err_msg: "Note not found with id " + req.params.id
+            });                
+        }
+        return res.status(500).send({
+            err_msg: "Could not delete note with id " + req.params.id
+        });
+    });
 };
+
+exports.project_all = (req, res) => {
+    Project.find()
+    .then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            err_msg: err.message || "Error occurred while retrieving projects."
+        });
+    });
+};
+
+
+
+exports.project_search = function(req, res) {     
+       
+            Project.find({ 'title': new RegExp(req.params.title, 'i') }).then(data => {
+                 res.send(data);
+            }).catch(err => {
+                res.status(500).send({
+                    err_msg: err.message || "Error occurred while retrieving projects."
+                });
+            });
+    };
