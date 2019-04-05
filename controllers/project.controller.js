@@ -7,8 +7,13 @@ exports.test = function (req, res) {
 exports.project_create = function (req, res) {
     let project = new Project(
         {
-            title: req.body.title,
+            title: req.body.title,  
+            manager_id: req.body.manager_id,         
+            start_date: req.body.start_date,
+            end_date: req.body.end_date,
+            status: req.body.status,
             priority: req.body.priority
+           
         }
     );
 
