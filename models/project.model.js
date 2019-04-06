@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+ObjectId = Schema.ObjectId;
+
 var ProjectSchema = new Schema({    
     title: {type: String, required: true},
     start_date: { type: Date},
