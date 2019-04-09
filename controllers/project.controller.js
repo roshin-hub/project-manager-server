@@ -79,7 +79,7 @@ exports.project_delete = (req, res) => {
 };
 
 exports.project_all = (req, res) => {
-    Project.find()
+    Project.find().sort([['updated_date', -1]])
     .then(data => {
         res.send(data);
     }).catch(err => {
