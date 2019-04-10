@@ -80,7 +80,7 @@ exports.task_delete = (req, res) => {
 };
 
 exports.task_all = (req, res) => {
-    Task.find()
+    Task.find().sort([['updated_date', -1]])
     .then(data => {
         res.send(data);
     }).catch(err => {

@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const project = require('./routes/project.route'); 
+const user = require('./routes/user.route'); 
+const task = require('./routes/task.route'); 
 // initialize our express app
 const app = express();
 
@@ -31,6 +33,8 @@ app.use(function(req, res, next) {
 });
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/project', project);
+app.use('/user', user);
+app.use('/task', task);
 
 var port = 8080;
 

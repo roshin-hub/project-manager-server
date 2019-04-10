@@ -75,7 +75,7 @@ exports.user_delete = (req, res) => {
 };
 
 exports.user_all = (req, res) => {
-    User.find()
+    User.find().sort([['updated_date', -1]])
     .then(data => {
         res.send(data);
     }).catch(err => {
