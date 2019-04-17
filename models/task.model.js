@@ -6,9 +6,9 @@ ObjectId = Schema.ObjectId;
 var TaskSchema = new Schema({    
     title: {type: String, required: true},
     is_parent: {type: Number, default: 0},
-    parent_id: {type: ObjectId, required: true,index: true},
-    project_id: {type: ObjectId, required: true,index: true},
-    user_id: {type: ObjectId, required: true,index: true},
+    parent_id: {type: String, index: true},
+    project_id: {type: String, required: true,index: true},
+    user_id: {type: String, required: true,index: true},
     start_date: { type: Date},
     end_date: { type: Date },
     priority: {type: Number, required: true},
